@@ -1,0 +1,143 @@
+definitions:
+  login.RepsGetCode:
+    properties:
+      body:
+        description: in Body
+        properties:
+          code:
+            type: string
+        required:
+        - code
+        type: object
+      mgsCode:
+        description: 返回体状态码
+        type: integer
+      mgsText:
+        description: 返回体信息
+        type: string
+    required:
+    - mgsCode
+    - mgsText
+    type: object
+  login.UserBody:
+    properties:
+      body:
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+          token:
+            type: string
+        type: object
+      mgsCode:
+        description: 返回体状态码
+        type: integer
+      mgsText:
+        description: 返回体信息
+        type: string
+    required:
+    - mgsCode
+    - mgsText
+    type: object
+  login.UserCode:
+    properties:
+      code:
+        type: string
+      phone:
+        type: string
+    required:
+    - code
+    - phone
+    type: object
+  login.UserSignReps:
+    properties:
+      body:
+        type: string
+      mgsCode:
+        description: 返回体状态码
+        type: integer
+      mgsText:
+        description: 返回体信息
+        type: string
+    required:
+    - mgsCode
+    - mgsText
+    type: object
+  login.UserSignType:
+    properties:
+      code:
+        description: 手机验证码
+        type: string
+      name:
+        description: 用户名
+        type: string
+      password:
+        description: 用户密码
+        type: string
+    required:
+    - code
+    - name
+    - password
+    type: object
+info:
+  contact: {}
+paths:
+  /login/user/{phone}:
+    get:
+      consumes:
+      - application/json
+      operationId: GetSingCode
+      parameters:
+      - description: 用户手机号
+        in: path
+        name: phone
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: JSON数据
+          schema:
+            $ref: '#/definitions/login.RepsGetCode'
+      summary: 用户验证码登录
+      tags:
+      - Login
+  /login/user/login:
+    post:
+      operationId: LoginsUser
+      parameters:
+      - description: JSON数据
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/login.UserCode'
+      responses:
+        "200":
+          description: JSON数据
+          schema:
+            $ref: '#/definitions/login.UserBody'
+      summary: 用户登录操作
+      tags:
+      - Login
+  /login/user/sign:
+    post:
+      operationId: SignUser
+      parameters:
+      - description: JSON数据
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/login.UserSignType'
+      responses:
+        "200":
+          description: JSON数据
+          schema:
+            $ref: '#/definitions/login.UserSignReps'
+      summary: 用户登录操作
+      tags:
+      - Login
+swagger: "2.0"
