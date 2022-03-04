@@ -16,11 +16,12 @@ import (
 type RepsGetCode struct {
 	module.Resp
 	// in Body
-	Body struct{
+	Body struct {
 		GetPhoneCode
 	}
 }
 
+// UserBody  RepsGetCode
 
 // GetSingCode
 // 获取登录验证码
@@ -33,7 +34,7 @@ type RepsGetCode struct {
 // @Param phone path string true "用户手机号"
 // @Success 200 {object} RepsGetCode true "JSON数据"
 // @Router /login/user/{phone} [get]
-func GetSingCode(r *gin.Context)  {
+func GetSingCode(r *gin.Context) {
 	Phone, err := r.Params.Get("name")
 	reps := RepsGetCode{}
 
@@ -69,21 +70,20 @@ func GetSingCode(r *gin.Context)  {
 // 用户登录成功的返回体
 type UserBody struct {
 	module.Resp
-	Body struct{
+	Body struct {
 		User
 	}
 }
-
 
 // LoginsUser
 // 用户账号密码登录
 // @Tags Login
 // @Summary 用户登录操作
 // @ID LoginsUser
-// @Param body body	UserCode true "JSON数据"
+// @Param data body	UserCode true "JSON数据"
 // @Success 200 {object} UserBody true "JSON数据"
 // @Router /login/user/login [post]
-func LoginsUser(r *gin.Context)  {
+func LoginsUser(r *gin.Context) {
 	body, err := ioutil.ReadAll(r.Request.Body)
 	myLog := my_log.GetLog()
 	defer myLog.CloseFileLog()
@@ -111,7 +111,6 @@ func LoginsUser(r *gin.Context)  {
 		json.Unmarshal(body, &userP)
 	}
 
-
 	if user.Phone == "" {
 		resp.MgsCode = 500
 		resp.MgsText = "手机号码为空"
@@ -124,16 +123,11 @@ func LoginsUser(r *gin.Context)  {
 		return
 	}
 
-
 	Users := struct {
-		Phone string `json:"phone"`
+		Phone    string `json:"phone"`
 		Password string `json:"password"`
-		Uid string `json:"uid"`
+		Uid      string `json:"uid"`
 	}{}
-
-
-
-
 
 	if user.Code == "" {
 		if Users.Password != userP.Password {
@@ -333,12 +327,10 @@ func LoginsUser(r *gin.Context)  {
 //	r.JSON(200, resp)
 //}
 
-
 var (
 	Secret     = "dong_tech" // 加盐
 	ExpireTime = 3600        // token有效期
 )
-
 
 // RgxPhone
 // 检查手机验证码是否合法化
@@ -360,7 +352,7 @@ func RgxPhone(r *gin.Context, phone string) bool {
 		return true
 	}
 
-	return  false
+	return false
 }
 
 // RgxPassword
@@ -387,7 +379,7 @@ func RgxPassword(r *gin.Context, password string) bool {
 
 // IsCode
 // 验证code验证是否合法
-func IsCode(r *gin.Context, code string)  bool {
+func IsCode(r *gin.Context, code string) bool {
 	myLog := my_log.GetLog()
 	defer myLog.CloseFileLog()
 	writeLog := myLog.GetLogger()
@@ -400,7 +392,7 @@ func IsCode(r *gin.Context, code string)  bool {
 		r.JSON(500, resp)
 		return true
 
-	}else if len(code) > 6 {
+	} else if len(code) > 6 {
 		resp.MgsCode = 500
 		resp.MgsText = "验证码位数错误"
 		writeLog.Println("验证码位数错误 ---> ", code)
@@ -408,10 +400,10 @@ func IsCode(r *gin.Context, code string)  bool {
 		return true
 	}
 
-	return  false
+	return false
 }
 
 type UserMessage struct {
 	Name string `json:"name"`
-	Say int `json:"say"`
+	Say  int    `json:"say"`
 }

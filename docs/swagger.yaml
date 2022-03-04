@@ -50,36 +50,6 @@ definitions:
     - code
     - phone
     type: object
-  login.UserSignReps:
-    properties:
-      body:
-        type: string
-      mgsCode:
-        description: 返回体状态码
-        type: integer
-      mgsText:
-        description: 返回体信息
-        type: string
-    required:
-    - mgsCode
-    - mgsText
-    type: object
-  login.UserSignType:
-    properties:
-      code:
-        description: 手机验证码
-        type: string
-      name:
-        description: 用户名
-        type: string
-      password:
-        description: 用户密码
-        type: string
-    required:
-    - code
-    - name
-    - password
-    type: object
 info:
   contact: {}
 paths:
@@ -110,7 +80,7 @@ paths:
       parameters:
       - description: JSON数据
         in: body
-        name: body
+        name: data
         required: true
         schema:
           $ref: '#/definitions/login.UserCode'
@@ -119,24 +89,6 @@ paths:
           description: JSON数据
           schema:
             $ref: '#/definitions/login.UserBody'
-      summary: 用户登录操作
-      tags:
-      - Login
-  /login/user/sign:
-    post:
-      operationId: SignUser
-      parameters:
-      - description: JSON数据
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/login.UserSignType'
-      responses:
-        "200":
-          description: JSON数据
-          schema:
-            $ref: '#/definitions/login.UserSignReps'
       summary: 用户登录操作
       tags:
       - Login
